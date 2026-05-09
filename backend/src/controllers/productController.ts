@@ -70,3 +70,5 @@ export async function getProductBySlug(
     next(e);
   }
 }
+
+//Most of the functions here are simple maths to filter out the products 

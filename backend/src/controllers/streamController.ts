@@ -28,6 +28,7 @@ export async function createStreamToken(
       return;
     }
 
+    // 1. Get the server singleton (authenticated with your secret key)
     const server = getStreamChatServer(env);
 
     const clerkUser = await clerkClient.users.getUser(userId);
@@ -36,6 +37,7 @@ export async function createStreamToken(
       [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") ||
       null;
 
+      // 2. Build the display name based on role
     const name = streamChatDisplayName(
       localUser.role,
       localUser.displayName ?? combined ?? clerkUser.username,
@@ -43,12 +45,17 @@ export async function createStreamToken(
     );
 
     const image = clerkUser.imageUrl || undefined;
+
+    // 3. Namespace the user ID
     const sid = streamUserId(userId);
 
+    // 4. Register/update this user on Stream's side
     await server.upsertUser({ id: sid, name, image });
 
+    // 5. Generate a token for the frontend to connect directly to Stream
     const token = server.createToken(sid);
 
+    // 6. Send everything the frontend needs
     res.json({ token, apiKey: env.STREAM_API_KEY, userId: sid });
   } catch (e) {
     next(e);
