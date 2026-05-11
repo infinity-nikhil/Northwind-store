@@ -10,6 +10,7 @@ import productRouter from "./routes/productRouter";
 import meRouter from "./routes/meRouter";
 import streamRouter from "./routes/streamRouter";
 import checkoutRouters from "./routes/checkoutRouter";
+import { polarWebhookHandler } from "./webhooks/polar";
 
 const env = getEnv();
 const app = express();
@@ -22,9 +23,9 @@ app.post("webhooks/clerk", rawJson, (req,res) => {
     void clerkWebhookHandler(req,res);
 })
 
-// app.post("/webhooks/polar", rawJson, (req, res) => {
-//   void polarWebhookHandler(req, res);
-// });
+app.post("/webhooks/polar", rawJson, (req, res) => {
+    void polarWebhookHandler(req, res);
+});
 
 app.use(express.json())
 app.use(cors())
