@@ -12,6 +12,8 @@ import productRouter from "./routes/productRouter";
 import meRouter from "./routes/meRouter";
 import streamRouter from "./routes/streamRouter";
 import checkoutRouters from "./routes/checkoutRouter";
+import adminRouter from "./routes/adminRouter";
+
 import { polarWebhookHandler } from "./webhooks/polar";
 import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
 
@@ -39,6 +41,7 @@ app.use("/api/me", meRouter);
 app.use("/api/products", productRouter);
 app.use("/api/stream", streamRouter);
 app.use("/api/checkout", checkoutRouters);
+app.use("/api/admin", adminRouter);
 
 // sentry will be attached to the response object
 Sentry.setupExpressErrorHandler(app);
